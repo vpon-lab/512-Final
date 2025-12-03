@@ -10,6 +10,323 @@
 		(rev "0")
 	)
 	(lib_symbols
+		(symbol "512_final_OLED_Accelerometer_symbols:ADXL345 Accelerometer"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "OLED"
+				(at -6859.27 -5100.32 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "ADXL345 Accelerometer_0_1"
+				(rectangle
+					(start -4151.63 -2336.8)
+					(end -4151.63 -2336.8)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 0 0)
+					(end 17 -20)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "ADXL345 Accelerometer_1_1"
+				(text "ADXL345 Accelerometer"
+					(at 8.382 2.54 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(pin input line
+					(at -3235.96 2402.84 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -1314.45 3239.77 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -1304.29 2072.64 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -1.27 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -3.81 0)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -6.35 0)
+					(length 2.54)
+					(name "CS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -8.89 0)
+					(length 2.54)
+					(name "INT1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -11.43 0)
+					(length 2.54)
+					(name "INT2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -13.97 0)
+					(length 2.54)
+					(name "SDO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -16.51 0)
+					(length 2.54)
+					(name "SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -2.54 -19.05 0)
+					(length 2.54)
+					(name "SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 433.07 1959.61 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 1017.27 2609.85 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "512_final_OLED_Accelerometer_symbols:SSD1306_OLED_"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -1748,6 +2065,30 @@
 		(uuid "218d5e6b-83bc-4539-b846-0025a4eb7502")
 	)
 	(junction
+		(at 167.64 85.09)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3041157e-87b9-4389-8e65-748c48b9d1c0")
+	)
+	(junction
+		(at 111.76 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4fc10a8c-cf1f-4224-a53b-9af6edc4b60e")
+	)
+	(junction
+		(at 170.18 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7963e4b6-4f10-4fbf-ab8a-2fe4b1741168")
+	)
+	(junction
+		(at 113.03 96.52)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8af597c7-1f49-4f20-903a-2d783e64876e")
+	)
+	(junction
 		(at 165.1 85.09)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1797,6 +2138,36 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 46.99) (xy 111.76 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1156ebeb-c683-4d4a-b4ea-4e8838fa6ec9")
+	)
+	(wire
+		(pts
+			(xy 170.18 88.9) (xy 175.26 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1d9859fa-01c1-4492-9713-9e7e4c8c9269")
+	)
+	(wire
+		(pts
+			(xy 200.66 44.45) (xy 113.03 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20d66f26-f907-42e6-9bdd-336fc803da95")
+	)
+	(wire
+		(pts
 			(xy 219.71 76.2) (xy 165.1 76.2)
 		)
 		(stroke
@@ -1804,6 +2175,36 @@
 			(type default)
 		)
 		(uuid "21b59306-7042-4974-a8f9-65c8aed76bf1")
+	)
+	(wire
+		(pts
+			(xy 167.64 29.21) (xy 167.64 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "231dbbca-5327-47cf-a9bc-8ab156a4e322")
+	)
+	(wire
+		(pts
+			(xy 167.64 85.09) (xy 168.91 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2377d425-aa38-44ca-9ab4-5f8881d0bee7")
+	)
+	(wire
+		(pts
+			(xy 200.66 29.21) (xy 167.64 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2fc7e173-52a5-4f34-9ce8-9b3af028b599")
 	)
 	(wire
 		(pts
@@ -1897,6 +2298,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 100.33) (xy 114.3 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47edf8ce-09e1-4a22-9e13-fdcdc7e0e2c4")
+	)
+	(wire
+		(pts
 			(xy 167.64 100.33) (xy 163.83 100.33)
 		)
 		(stroke
@@ -1904,6 +2315,16 @@
 			(type default)
 		)
 		(uuid "4b27ab1e-0387-4beb-b20c-bad613a2d834")
+	)
+	(wire
+		(pts
+			(xy 170.18 31.75) (xy 170.18 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ff5da5e-3181-40b0-b02e-5d95188aa27f")
 	)
 	(wire
 		(pts
@@ -1927,6 +2348,16 @@
 	)
 	(wire
 		(pts
+			(xy 200.66 31.75) (xy 170.18 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "56363d57-5d05-4f02-a2b5-cd3d6f476590")
+	)
+	(wire
+		(pts
 			(xy 203.2 124.46) (xy 203.2 102.87)
 		)
 		(stroke
@@ -1947,7 +2378,7 @@
 	)
 	(wire
 		(pts
-			(xy 166.37 85.09) (xy 168.91 85.09)
+			(xy 166.37 85.09) (xy 167.64 85.09)
 		)
 		(stroke
 			(width 0)
@@ -1987,7 +2418,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 100.33) (xy 114.3 100.33)
+			(xy 110.49 100.33) (xy 111.76 100.33)
 		)
 		(stroke
 			(width 0)
@@ -2097,13 +2528,23 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 88.9) (xy 175.26 88.9)
+			(xy 163.83 88.9) (xy 170.18 88.9)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "aa7ce50d-f079-4077-953d-9775e0ac43db")
+	)
+	(wire
+		(pts
+			(xy 113.03 96.52) (xy 114.3 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab879c89-e57c-4d22-aa50-8ef61f28752e")
 	)
 	(wire
 		(pts
@@ -2124,6 +2565,16 @@
 			(type default)
 		)
 		(uuid "b6f35a42-00a4-4e6f-8ef5-0a9e29d43b55")
+	)
+	(wire
+		(pts
+			(xy 200.66 46.99) (xy 111.76 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b7902075-df46-4cca-bdab-121152cded72")
 	)
 	(wire
 		(pts
@@ -2197,7 +2648,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 96.52) (xy 114.3 96.52)
+			(xy 106.68 96.52) (xy 113.03 96.52)
 		)
 		(stroke
 			(width 0)
@@ -2227,6 +2678,16 @@
 	)
 	(wire
 		(pts
+			(xy 113.03 44.45) (xy 113.03 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f7dee2ae-b4de-45f1-9b1e-bb51ff270c01")
+	)
+	(wire
+		(pts
 			(xy 167.64 124.46) (xy 167.64 100.33)
 		)
 		(stroke
@@ -2234,6 +2695,109 @@
 			(type default)
 		)
 		(uuid "faca7873-dbe6-4350-b1f0-78f8e061c942")
+	)
+	(symbol
+		(lib_id "512_final_OLED_Accelerometer_symbols:ADXL345 Accelerometer")
+		(at 203.2 27.94 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4c18f9ef-94c8-4aa0-a9e2-1645fec2cb1b")
+		(property "Reference" "OLED1"
+			(at 1224.28 -424.8151 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "~"
+			(at 1224.28 -422.2751 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 203.2 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 203.2 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 203.2 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "52f31438-4722-4bfb-ac33-3a0ef0e5f37e")
+		)
+		(pin "5"
+			(uuid "7d56c3d6-9f9d-4577-b17c-204d65af4a84")
+		)
+		(pin "1"
+			(uuid "42e0d99e-b56b-47ff-b39f-465d53480d49")
+		)
+		(pin "1"
+			(uuid "3cb061db-49fb-4fbe-990b-6ab55cc2ab69")
+		)
+		(pin "1"
+			(uuid "bf20561a-5815-46bc-bf58-17b32494524c")
+		)
+		(pin "1"
+			(uuid "22625420-b88e-429e-a911-0ece2d8f738a")
+		)
+		(pin "6"
+			(uuid "603438be-cc2a-4550-b499-178474f80f61")
+		)
+		(pin "1"
+			(uuid "3b90502a-3fd0-4684-975f-81ef76c45466")
+		)
+		(pin "1"
+			(uuid "9bc27ecf-5cdc-4dff-8522-c37b3d487428")
+		)
+		(pin "2"
+			(uuid "51742d8f-7541-4bde-a853-a23426a19e13")
+		)
+		(pin "3"
+			(uuid "45c93402-18f9-4aa8-a03b-9f5befb61180")
+		)
+		(pin "7"
+			(uuid "eae685cb-2127-40df-ab5a-6c3bccc3098c")
+		)
+		(pin "8"
+			(uuid "482bf0f1-f76a-49a0-a9ee-969479c04cf4")
+		)
+		(instances
+			(project ""
+				(path "/08afefe6-1bfd-4a44-a180-3505e1895b3a"
+					(reference "OLED1")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Device:Battery_Cell")
