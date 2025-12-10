@@ -274,8 +274,8 @@ def play_level(level_number):
     return True
 
 allowed_moves = {
-    "Easy": ["Push it!", "Twist it!"],
-    "Medium": ["Push it!", "Twist it!", "Forward!"],
+    "Easy": ["Push it!", "Twist it!", "Forward!", "Backward!"],
+    "Medium": ["Push it!", "Twist it!", "Forward!", "Backward!"],
     "Hard": ["Push it!", "Twist it!", "Forward!", "Backward!"]
 }
 
@@ -299,6 +299,42 @@ def player_response(pitch_filtered):
         return "Backward!"
 
     return None
+
+def play_again_menu():
+    global prev_state, prev_encoder_pos 
+    options = ["Yes", "No"]
+    index = 0
+
+    text_layer.text = "Play Again?"
+    center_txt(text_layer)
+    time.sleep(0.5)
+
+    while True:
+        encoder.update()
+        cur_pos = encoder.position
+
+        delta = cur_pos - prev_encoder_pos
+        if delta != 0:
+            step = 1 if delta > 0 else -1
+            index = (index + step) % len(options)
+            # Display menu
+            text = ""
+            for i, opt in enumerate(options):
+                if i == index:
+                    text += "> " + opt + "\n"
+                else:
+                    text += "  " + opt + "\n"
+            text_layer.text = text
+            center_txt(text_layer)
+            prev_encoder_pos = cur_pos
+            time.sleep(0.15)
+
+        # Button press
+        cur = btn.value
+        global prev_state
+        if prev_state and not cur:  # falling edge
+            return options[index] == "Yes"
+        prev_state = cur
 
 
 def set_color(color):
@@ -367,17 +403,35 @@ x_b, y_b = calibrate_zero(accelerometer)
 # -----------------------------------------
 # Main game loop
 # -----------------------------------------
-current_level = 1
-game_over = False
 
-while current_level <= 10 and not game_over:
-    display_level(current_level)
-    success = play_level(current_level)
-    if success:
-        current_level += 1
+while True:
+    # Reset game state
+    current_level = 1
+    game_over = False
+    prev_encoder_pos = encoder.position
+    current_allowed = allowed_moves[difficulty_choice]
+
+    while current_level <= 10 and not game_over:
+        display_level(current_level)
+        success = play_level(current_level)
+        if success:
+            current_level += 1
+        else:
+            game_over = True
+
+    if current_level > 10:
+        text_layer.text = "YOU WIN!"
+        center_txt(text_layer)
+
+    # Ask to play again
+    if play_again_menu():
+        # Optional: select new difficulty
+        difficulty_choice = select_difficulty()
+        timer_limit = diff_mode(difficulty_choice)
+        current_allowed = allowed_moves[difficulty_choice]
     else:
-        game_over = True
+        text_layer.text = "Thanks for playing!"
+        center_txt(text_layer)
+        break
 
-if current_level > 10:
-    text_layer.text = "YOU WIN!"
-    center_txt(text_layer)
+
