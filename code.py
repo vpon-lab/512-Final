@@ -40,6 +40,34 @@ text_layer = label.Label(terminalio.FONT, text="")
 splash.append(text_layer)
 
 # -----------------------------------------
+# Accelerometer setup
+# -----------------------------------------
+accelerometer = adafruit_adxl34x.ADXL345(i2c)
+
+start_time = time.monotonic()
+response_time = None
+prev_encoder_pos = encoder.position
+
+alpha = 0.2
+
+FORWARD_ANGLE = 25
+BACKWARD_ANGLE = -25
+EXIT_ANGLE = 5
+state = "neutral"
+neutral_start = None
+twist_cooldown = 0.3
+last_success_time = 0
+
+pixel_pin = board.D10
+num_pixels = 1
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=True)
+
+RED = (255, 0, 0)
+YELLOW = (255, 150, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+
+# -----------------------------------------
 # DIFFICULTY MENU (WORKING – NO .position writes)
 # -----------------------------------------
 
@@ -115,37 +143,139 @@ def diff_mode(choice):
 difficulty_choice = select_difficulty()
 timer_limit = diff_mode(difficulty_choice)
 
+# --------------------------------------------------
+# Diplaying the 10 levels
+# --------------------------------------------------
+current_level = 1 
+
+def display_level():
+    text_layer.text = f"Level {current_level}"
+    center_txt(text_layer)
+    
+    if current_level > 10:
+        text_layer.text = "YOU WIN!"
+        center_text(text_layer)
+
+def beat_level(current_level):
+    current_level += 1
+    display_level()
+  
 
 # --------------------------------------------------
-# REST OF YOUR GAME CODE (UNCHANGED)
+# Transitioning between levels 
 # --------------------------------------------------
+# Available moves
+def twistIt():
+    text_layer.text = "Twist it!"
+    center_txt(text_layer)
 
-# Accelerometer
-accelerometer = adafruit_adxl34x.ADXL345(i2c)
+def pushIt():
+    text_layer.text = "Push it!"
+    center_txt(text_layer)
 
-start_time = time.monotonic()
-response_time = None
-prev_encoder_pos = encoder.position
+def forward():
+    text_layer.text = "Forward!"
+    center_txt(text_layer)
 
-alpha = 0.2
-pitch_filtered = 0
+def backward():
+    text_layer.text = "Backward!"
+    center_txt(text_layer)
+    
+    
+plays = [
+    {"label": "Twist it!", "func": twistIt, "check": lambda p: p == "Twist it!"},
+    {"label": "Push it!",  "func": pushIt,  "check": lambda p: p == "Push it!"},
+    {"label": "Forward!", "func": forward, "check": lambda p: p == "Forward!"},
+    {"label": "Backward!","func": backward,"check": lambda p: p == "Backward!"},
+]
 
-FORWARD_ANGLE = 25
-BACKWARD_ANGLE = -25
-EXIT_ANGLE = 5
-state = "neutral"
-neutral_start = None
-twist_cooldown = 0.3
-last_success_time = 0
+# Define levels: each level is a list of possible moves and number of rounds
+levels_config = [
+    {"moves": ["Push it!"], "rounds": 3},                  # Level 1
+    {"moves": ["Twist it!"], "rounds": 3},                # Level 2
+    {"moves": ["Forward!"], "rounds": 3},                 # Level 3
+    {"moves": ["Backward!"], "rounds": 3},                # Level 4
+    {"moves": ["Push it!", "Twist it!"], "rounds": 4},    # Level 5
+    {"moves": ["Forward!", "Backward!"], "rounds": 4},    # Level 6
+    {"moves": ["Push it!", "Twist it!", "Forward!"], "rounds": 5},  # Level 7
+    {"moves": ["Push it!", "Twist it!", "Forward!", "Backward!"], "rounds": 5},  # Level 8
+    {"moves": ["Push it!", "Twist it!", "Forward!", "Backward!"], "rounds": 7},  # Level 9
+    {"moves": ["Push it!", "Twist it!", "Forward!", "Backward!"], "rounds": 8},  # Level 10
+]
 
-pixel_pin = board.D10
-num_pixels = 1
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=True)
+def get_move_obj(label_name):
+    for move in plays:
+        if move["label"] == label_name:
+            return move
+    return None
 
-RED = (255, 0, 0)
-YELLOW = (255, 150, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+def display_level(level):
+    text_layer.text = f"Level {level}"
+    center_txt(text_layer)
+    time.sleep(0.7)
+    
+def play_level(level_number):
+    pitch_filtered = 0  # initialize here
+    config = levels_config[level_number - 1]
+    rounds = config["rounds"]
+    level_moves = config["moves"]
+
+    for r in range(rounds):
+        label_name = random.choice(level_moves)
+        move_obj = get_move_obj(label_name)
+        move_obj["func"]()
+        expected = move_obj["label"]
+
+        start_time = time.monotonic()
+        while True:
+            ax, ay, az = accelerometer.acceleration
+            pitch_raw = get_pitch(ax - x_b, ay - y_b, az)
+            pitch_filtered = alpha * pitch_raw + (1 - alpha) * pitch_filtered
+
+            move = player_response(pitch_filtered)  # pass it in
+
+            if move == expected:
+                set_color(GREEN)
+                text_layer.text = "Nice!"
+                center_txt(text_layer)
+                time.sleep(0.7)
+                state = "neutral"
+                break
+            elif move:
+                set_color(RED)
+                text_layer.text = "Wrong move!"
+                center_txt(text_layer)
+                time.sleep(1)
+                text_layer.text = "Game Over!"
+                center_txt(text_layer)
+                set_color((255, 255, 255))
+                return False
+            elif time.monotonic() - start_time > timer_limit:
+                set_color(RED)
+                text_layer.text = "Times Up!"
+                center_txt(text_layer)
+                time.sleep(1)
+                text_layer.text = "Game Over!"
+                center_txt(text_layer)
+                set_color((255, 255, 255))
+                return False
+            time.sleep(0.001)
+    return True
+
+def player_response(pitch_filtered):
+    push, twist = update_inputs()
+    tilt_fwd = detect_forwardTilt(pitch_filtered)
+    tilt_back = detect_backwardTilt(pitch_filtered)
+
+    if push:
+        return "Push it!"
+    if twist:
+        return "Twist it!"
+    if tilt_fwd:
+        return "Forward!"
+    if tilt_back:
+        return "Backward!"
+    return None
 
 def set_color(color):
     pixels.fill(color)
@@ -207,88 +337,23 @@ def update_inputs():
 
     return push, twist
 
-def player_response(pitch_filtered):
-    push, twist = update_inputs()
-
-    tilt_fwd = detect_forwardTilt(pitch_filtered)
-    tilt_back = detect_backwardTilt(pitch_filtered)
-
-    if push: return "Push it!"
-    if twist: return "Twist it!"
-    if tilt_fwd: return "Forward!"
-    if tilt_back: return "Backward!"
-    return None
-
-def twistIt():
-    text_layer.text = "Twist it!"
-    center_txt(text_layer)
-
-def pushIt():
-    text_layer.text = "Push it!"
-    center_txt(text_layer)
-
-def forward():
-    text_layer.text = "Forward!"
-    center_txt(text_layer)
-
-def backward():
-    text_layer.text = "Backward!"
-    center_txt(text_layer)
-
-plays = [
-    {"label": "Twist it!", "func": twistIt, "check": lambda p: p == "Twist it!"},
-    {"label": "Push it!",  "func": pushIt,  "check": lambda p: p == "Push it!"},
-    {"label": "Forward!", "func": forward, "check": lambda p: p == "Forward!"},
-    {"label": "Backward!","func": backward,"check": lambda p: p == "Backward!"},
-]
-
 game_over = False
 x_b, y_b = calibrate_zero(accelerometer)
 
-while not game_over:
-    set_color((255, 150, 0))
-    chosen = random.choice(plays)
-    prev_encoder_pos = encoder.position
-    chosen["func"]()
-    expected = chosen["label"]
-    start_time = time.monotonic()
+# -----------------------------------------
+# Main game loop
+# -----------------------------------------
+current_level = 1
+game_over = False
 
-    while True:
-        ax, ay, az = accelerometer.acceleration
-        pitch_raw = get_pitch(ax - x_b, ay - y_b, az)
-        pitch_filtered = alpha * pitch_raw + (1 - alpha) * pitch_filtered
+while current_level <= 10 and not game_over:
+    display_level(current_level)
+    success = play_level(current_level)
+    if success:
+        current_level += 1
+    else:
+        game_over = True
 
-        move = player_response(pitch_filtered)
-
-        if move == expected:
-            set_color((0, 255, 0))
-            text_layer.text = "Nice!"
-            center_txt(text_layer)
-            time.sleep(0.7)
-            state = "neutral"
-            break
-
-        if move:
-            set_color((255, 0, 0))
-            text_layer.text = "Wrong move!"
-            center_txt(text_layer)
-            time.sleep(1)
-            text_layer.text = "Game Over!"
-            center_txt(text_layer)
-            set_color((255, 255, 255))
-            game_over = True
-            break
-
-        if time.monotonic() - start_time > timer_limit:
-            set_color((255, 0, 0))
-            text_layer.text = "Times Up!"
-            center_txt(text_layer)
-            time.sleep(1)
-            text_layer.text = "Game Over!"
-            center_txt(text_layer)
-            set_color((255, 255, 255))
-            game_over = True
-            break
-
-        time.sleep(0.001)
-
+if current_level > 10:
+    text_layer.text = "YOU WIN!"
+    center_txt(text_layer)
