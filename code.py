@@ -50,8 +50,8 @@ prev_encoder_pos = encoder.position
 
 alpha = 0.2
 
-FORWARD_ANGLE = 25
-BACKWARD_ANGLE = -25
+FORWARD_ANGLE = 35
+BACKWARD_ANGLE = -35
 EXIT_ANGLE = 5
 state = "neutral"
 neutral_start = None
@@ -215,7 +215,11 @@ def display_level(level):
     time.sleep(0.7)
     
 def play_level(level_number):
-    pitch_filtered = 0  # initialize here
+    # Before the rounds loop:
+    global state
+    ax, ay, az = accelerometer.acceleration
+    pitch_filtered = get_pitch(ax - x_b, ay - y_b, az)  # initialize filter correctly
+
     config = levels_config[level_number - 1]
     rounds = config["rounds"]
     level_moves = config["moves"]
@@ -225,6 +229,8 @@ def play_level(level_number):
         move_obj = get_move_obj(label_name)
         move_obj["func"]()
         expected = move_obj["label"]
+        
+        state = "neutral" 
 
         start_time = time.monotonic()
         while True:
@@ -233,6 +239,9 @@ def play_level(level_number):
             pitch_filtered = alpha * pitch_raw + (1 - alpha) * pitch_filtered
 
             move = player_response(pitch_filtered)  # pass it in
+            # Ignore noise or moves not allowed in this difficulty
+            if move and move not in current_allowed:
+                move = None
 
             if move == expected:
                 set_color(GREEN)
@@ -241,6 +250,7 @@ def play_level(level_number):
                 time.sleep(0.7)
                 state = "neutral"
                 break
+            
             elif move:
                 set_color(RED)
                 text_layer.text = "Wrong move!"
@@ -250,6 +260,7 @@ def play_level(level_number):
                 center_txt(text_layer)
                 set_color((255, 255, 255))
                 return False
+            
             elif time.monotonic() - start_time > timer_limit:
                 set_color(RED)
                 text_layer.text = "Times Up!"
@@ -262,6 +273,14 @@ def play_level(level_number):
             time.sleep(0.001)
     return True
 
+allowed_moves = {
+    "Easy": ["Push it!", "Twist it!"],
+    "Medium": ["Push it!", "Twist it!", "Forward!"],
+    "Hard": ["Push it!", "Twist it!", "Forward!", "Backward!"]
+}
+
+current_allowed = allowed_moves[difficulty_choice]
+
 def player_response(pitch_filtered):
     push, twist = update_inputs()
     tilt_fwd = detect_forwardTilt(pitch_filtered)
@@ -269,13 +288,18 @@ def player_response(pitch_filtered):
 
     if push:
         return "Push it!"
+
     if twist:
         return "Twist it!"
+
     if tilt_fwd:
         return "Forward!"
+
     if tilt_back:
         return "Backward!"
+
     return None
+
 
 def set_color(color):
     pixels.fill(color)
@@ -325,7 +349,7 @@ def update_inputs():
     encoder.update()
     delta = encoder.position - prev_encoder_pos
     twist = False
-    if abs(delta) >= 1:
+    if abs(delta) >= 3:
         prev_encoder_pos = encoder.position
         twist = True
 
